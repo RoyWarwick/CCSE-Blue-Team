@@ -10,7 +10,8 @@ signed main(void) {
     
     while (1) {
         if (digitalRead(22) == HIGH) {
-            system("./alarm &");
+	    if (system("test -z \"$(pgrep alarm)\"") == 0)
+                system("./alarm &");
             sprintf(send+30,"%d",(unsigned long)time(NULL));
             send[40] = ' ';
             send[41] = 'A';

@@ -30,14 +30,14 @@ signed main(void) {
 	keypad.setDebounceTime(50);
 	
 	pinMode(26, OUTPUT); // Blue LED
-	char hold[4], i = 17;
-	char cmd[] = "test -z \"$(grep \"xxxx\" PINs)\"";
+	char hold[4], i = 22;
+	char cmd[] = "htpasswd -bBv PINs \"\" xxxx > /dev/null 2> /dev/null";
 	char send[] = "mosquitto_pub -t security -m \"xxxxxxxxxx xxxxxx\"";
     while (1) {
         key = keypad.getKey();  //get the state of keys
         if (key) {// when a key is pressed
             if (key == '#' || key == '*') {
-                if (i < 21) {
+                if (i < 26) {
                     // Error - too short
                     digitalWrite(26,HIGH);
                     delay(200);
@@ -49,13 +49,14 @@ signed main(void) {
                 } else {
                     sprintf(send+30,"%d",(unsigned long)time(NULL));
                     send[40] = ' ';
-                    send[41] = cmd[17];
-                    send[42] = cmd[18];
-                    send[43] = cmd[19];
-                    send[44] = cmd[20];
+                    send[41] = cmd[22];
+                    send[42] = cmd[23];
+                    send[43] = cmd[24];
+                    send[44] = cmd[25];
                     send[45] = key;
+                   
                     // Find string
-                    if (system(cmd) == 0) {
+                    if (system(cmd) != 0) {
                         send[46] = 'F';
                     	system(send);
                         digitalWrite(26,HIGH);
@@ -65,11 +66,12 @@ signed main(void) {
                     	digitalWrite(26,HIGH);
                         delay(200);
                     	digitalWrite(26,LOW);
-                    	i = 17;
+                    	i = 22;
 
                     } else {
                         //success
-                        system("killall alarm 2> /dev/null");
+			if (system("test -z \"$(pgrep alarm)\"") != 0)
+                             system("killall alarm 2> /dev/null");
                         system("./off");
                         send[46] = 'T';
                     	system(send);
@@ -79,9 +81,9 @@ signed main(void) {
 
                     }
                 }
-                i = 17;
-            } else if (i == 21) {
-                i = 17;
+                i = 22;
+            } else if (i == 26) {
+                i = 22;
                 // Error - too long
                 digitalWrite(26,HIGH);
                 delay(200);
@@ -96,7 +98,7 @@ signed main(void) {
             	digitalWrite(26,LOW);
             	delay(10);
                 cmd[i] = key;
-        	    i++;
+        	i++;
     	    }
         }
     }
