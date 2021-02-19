@@ -26,8 +26,8 @@ read
 
 if [[ $EUID != 0 ]]
 then
-    echo "This script must be run as the superuser." >$2
-    echo "Exit status: 1" >$2
+    echo "This script must be run as the superuser." >&2
+    echo "Exit status: 1" >&2
     exit 1
 fi
 
@@ -39,7 +39,6 @@ echo "Installation starting..."
 apt update
 apt-get install strongswan apache2-utils mosquitto mosquitto-clients
 
-# Get files from github
 
 # Place files in correct place - perhaps /usr/security
 cd /usr
@@ -50,7 +49,20 @@ chmod 555 log
 touch root.sh
 chmod 777 root.sh
 
+# Get files from github
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/sensor?raw=true -O sensor
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/off?raw=true -O off
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -O alarm
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
+
+# Create the root.sh file
 echo "#!/bin/bash" > root.sh
+echo "cd /home/pi" >> root.sh
+echo "/home/pi/MatrixKeypad & disown" >> root.sh
+echo "/home/pi/sensor & disown" >> root.sh
+echo "mosquitto_sub -t \"security\" -h 127.0.0.1 >> log & disown" >> root.sh
+echo "exit 0" >> root.sh
 
 # Setup IPSec
 echo -n "" > /etc/ipsec.secrets
