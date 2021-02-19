@@ -1,0 +1,44 @@
+<body>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Humidity</th>
+      <th scope="col">Temperature</th>
+    </tr>
+  </thead>
+{% for sensor in json_data %}
+    <tbody>
+      <tr class="table-danger">
+          {% if sensor.temperature > 80 %}
+      <td>
+          <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+            <div class="card-header">Sensor Temperature</div>
+            <div class="card-body">
+            <h4 class="card-title">ID:{{sensor.id}}</h4>
+                <p class="card-text">This sensor is {{sensor.temperature}} level of temperature</p>
+            </div>
+        </div>
+      </td>
+      <td></td>
+    </tr>
+{% elif sensor.humidity > 80 %}
+    <tbody>
+      <tr class="table-danger">
+          <td></td>
+      <td>
+          <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+            <div class="card-header">Sensor Humidity</div>
+                <div class="card-body">
+                <h4 class="card-title"> ID:{{sensor.id}}</h4>
+                <p class="card-text">This sensor is {{sensor.humidity}} level of humidity</p>
+            </div>
+        </div>
+      </td>
+
+    </tr>
+  </tbody>
+{% endif %}
+{% endfor %}
+</table>
+{% endblock %}
+</body>>

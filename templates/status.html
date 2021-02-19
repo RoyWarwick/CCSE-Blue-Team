@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Humidity</th>
+      <th scope="col">Temperature</th>
+    </tr>
+  </thead>
+  {% if larger_array %}
+    {% for sensor in extreme_humidity %}
+      <tbody>
+        <tr class="table-danger">
+        <td>
+            <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+              <div class="card-header">Sensor Temperature</div>
+              <div class="card-body">
+              <h4 class="card-title">ID:{{sensor.sensor_id|exception_handler}}</h4>
+                  <p class="card-text">This sensor is {{sensor.Temp_C|exception_handler}} level of temperature</p>
+              </div>
+          </div>
+        </td>
+          <td>
+            <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+              <div class="card-header">Sensor Humidity</div>
+                  <div class="card-body">
+                  <h4 class="card-title"> ID:{{sensor.sensor_id|exception_handler}}</h4>
+                  <p class="card-text">This sensor is {{sensor.Humidity|exception_handler }} level of humidity</p>
+              </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    {% endfor %}
+  {% else %}
+    {% for sensor in extreme_temperature %}
+      <tbody>
+        <tr class="table-danger">
+          <td>
+            <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+              <div class="card-header">Sensor Temperature</div>
+              <div class="card-body">
+              <h4 class="card-title">ID:{{sensor.sensor_id|exception_handler}}</h4>
+                  <p class="card-text">This sensor is {{sensor.Temp_C|exception_handler}} level of temperature</p>
+              </div>
+          </div>
+        </td>
+        <td>
+            <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+              <div class="card-header">Sensor Humidity</div>
+                  <div class="card-body">
+                  <h4 class="card-title"> ID:{{sensor.sensor_id|exception_handler}}</h4>
+                  <p class="card-text">This sensor is {{sensor.Humidity|exception_handler}} level of humidity</p>
+              </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  {% endfor %}
+{% endif %}
+</table>
+{% endblock %}
+</body>>

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Cool stuff</p>
+{% if variable != "" %}
+<p>{{variable}}</p>
+{% else %}
+<p>No variable</p>
+{% endif %}
+
+
+<body>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Humidity</th>
+      <th scope="col">Temperature</th>
+    </tr>
+  </thead>
+{% for sensor in json_data %}
+{% if sensor.Temp_C < 50 and sensor.Humidity < 50 %}
+    <tbody>
+      <tr class="table-success">
+      <th scope="row">{{sensor.sensor_id}}</th>
+      <td>{{sensor.Humidity}}</td>
+      <td>{{sensor.Temp_C}}</td>
+    </tr>
+{% else %}
+    <tbody>
+      <tr class="table-danger">
+      <th scope="row">{{sensor.sensor_id}}</th>
+      <td>{{sensor.Humidity}}</td>
+      <td>{{sensor.Temp_C}}</td>
+    </tr>
+  </tbody>
+{% endif %}
+{% endfor %}
+</table>
+{% endblock %}
+</body>
