@@ -70,9 +70,8 @@ signed main(void) {
 
                     } else {
                         //success
-			if (system("test -z \"$(pgrep alarm)\"") != 0)
-                             system("killall alarm 2> /dev/null");
-                        system("./off");
+                        system("killall alarm 2> /dev/null");
+                        system("/usr/security/off");
                         send[46] = 'T';
                     	system(send);
                         digitalWrite(26,HIGH);
