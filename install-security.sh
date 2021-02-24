@@ -103,7 +103,7 @@ echo -e "\tright=$FOREIGN">> /etc/ipsec.conf
 echo -e "\trightsubnet=$FOREIGN/32">> /etc/ipsec.conf
 
 # Ensure files are executed at startup
-echo "#!/bin/bash" > /etc/rc.local
+echo "#\!/bin/bash" > /etc/rc.local
 echo "/usr/security/root.sh" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
