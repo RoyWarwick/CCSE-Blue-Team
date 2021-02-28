@@ -20,8 +20,8 @@ DHT_SENSOR = Adafruit_DHT.DHT22
 DHT_PIN = 4
 
 
-
 while True:
+ try:
     
 #DHT read values and output them to terminal    
     
@@ -58,3 +58,5 @@ while True:
     
     time.sleep(2)
 
+ except KeyboardInterrupt:
+	GPIO.cleanup()
