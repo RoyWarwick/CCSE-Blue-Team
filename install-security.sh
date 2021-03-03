@@ -1,7 +1,5 @@
 #!/bin/bash
 
-STARTPWD=$PWD
-
 # This file is for enabling a machine to act as a security unit.
 echo
 echo "#### Security Unit ####"
@@ -63,9 +61,10 @@ wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/off?raw=true -O 
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -O alarm
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/return.sh?raw=true -O return.sh
 
 # Set appropriate file permissions
-chmod 711 sensor off alarm MatrixKeypad
+chmod 711 sensor off alarm MatrixKeypad return.sh
 chmod 744 PINs
 
 # Create the root.sh file
@@ -74,6 +73,7 @@ echo "cd /usr/security" >> root.sh
 echo "service ipsec start" >> root.sh
 echo "/usr/security/MatrixKeypad & disown" >> root.sh
 echo "/usr/security/sensor & disown" >> root.sh
+echo "/usr/security/return.sh & disown" >> root.sh
 echo "mosquitto_sub -t \"security\" -h 127.0.0.1 >> log & disown" >> root.sh
 echo "exit 0" >> root.sh
 
@@ -107,5 +107,5 @@ echo "#\!/bin/bash" > /etc/rc.local
 echo "/usr/security/root.sh" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
-cd $STARTPWD
+exit 0
 
