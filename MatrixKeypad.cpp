@@ -24,7 +24,7 @@ byte rowPins[ROWS] = {1, 4, 5, 6}; //define the row pins for the keypad
 byte colPins[COLS] = {12, 3, 2, 0}; //define the column pins for the keypad
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS); //create Keypad object
 
-signed main(void) {
+signed main(int argc, char * argv[]) {
     wiringPiSetup();
     char key = 0;
 	keypad.setDebounceTime(50);
@@ -32,7 +32,8 @@ signed main(void) {
 	pinMode(26, OUTPUT); // Blue LED
 	char hold[4], i = 22;
 	char cmd[] = "htpasswd -bBv PINs \"\" xxxx > /dev/null 2> /dev/null";
-	char send[] = "mosquitto_pub -t security -m \"xxxxxxxxxx xxxxxx\"";
+	char send[180];
+	sprintf(send,"mosquitto_pub -t security -m \"xxxxxxxxxx xxxxxx\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h %s",argv[1]);
     while (1) {
         key = keypad.getKey();  //get the state of keys
         if (key) {// when a key is pressed

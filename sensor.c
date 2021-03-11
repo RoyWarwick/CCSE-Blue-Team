@@ -3,8 +3,9 @@
 #include <wiringPi.h>
 #include <time.h>
 
-signed main(void) {
-    char send[] = "mosquitto_pub -t security -m \"xxxxxxxxxx x\"";
+signed main(int argc, char * argv[]) {
+    char send[175];
+    sprintf(send, "mosquitto_pub -t security -m \"xxxxxxxxxx x\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h <local-IP>", argv[1]);
     wiringPiSetup();
     pinMode(22,INPUT);
     

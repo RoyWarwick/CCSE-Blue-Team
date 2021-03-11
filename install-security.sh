@@ -35,21 +35,19 @@ LOCAL=$REPLY
 echo -n "Provide foreign IPv4 address: "
 read
 FOREIGN=$REPLY
-echo -n "Provide pre-shared secret: "
-read
-SECRET=$REPLY
 
 echo "Installation starting..."
 
 # installation
 apt update
-apt-get install strongswan apache2-utils mosquitto mosquitto-clients
+apt-get install -y openssl strongswan apache2-utils mosquitto mosquitto-clients
 
 # Place files in correct place
 cd /usr
 rm -r security 2> /dev/null # Remove any previous installations
 mkdir security
 cd security
+mkdir x509
 touch log
 chmod 755 log
 touch root.sh
@@ -62,45 +60,32 @@ wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/return.sh?raw=true -O return.sh
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O x509/openssl.cnf
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/mosquitto.conf?raw=true -O /etc/mosquitto/mosquitto.conf
 
 # Set appropriate file permissions
 chmod 711 sensor off alarm MatrixKeypad return.sh
-chmod 744 PINs
+chmod 744 PINs x509/openssl.cnf
+
+# Create TLS files
+openssl genrsa -out /etc/mosquitto/certs/sec.key 4096
+cat openssl.cnf | perl -p -e 's/<local-IP>/'$LOCAL'/' > openssl.cnf
+echo -ne "\n\n\n\n\n\n\n\n\n" | openssl req -out /usr/security/x509/sec.csr -key /etc/mosquitto/certs/sec.key -new -config /usr/security/x509/openssl.cnf &> /dev/null
+echo "A certificate signing request (/usr/security/x509/sec.csr) has been created."
+echo "A certificate authority must be trusted by both this unit and its aggregator; the certificate of which must be stored locally as /usr/security/x509/ca.crt"
+echo "The certificate signing request must be signed by that certificate authority and the certifiate stored locally as /usr/security/x509/sec.crt"
+echo -n "Press enter one this is done..."
+read
 
 # Create the root.sh file
-echo "#!/bin/bash" > root.sh
+echo "#\!/bin/bash" > root.sh
 echo "cd /usr/security" >> root.sh
 echo "service ipsec start" >> root.sh
-echo "/usr/security/MatrixKeypad & disown" >> root.sh
-echo "/usr/security/sensor & disown" >> root.sh
+echo "/usr/security/MatrixKeypad $LOCAL & disown" >> root.sh
+echo "/usr/security/sensor $LOCAL & disown" >> root.sh
 echo "/usr/security/return.sh & disown" >> root.sh
-echo "mosquitto_sub -t \"security\" -h 127.0.0.1 >> log & disown" >> root.sh
+echo "mosquitto_sub -t \"security\" --cafile /etc/mosquitto/certs/ca.crt --cert /etc/mosquitto/certs/server.crt --key /etc/mosquitto/certs/server.key -p 8883 -h \"$LOCAL\" >> log & disown" >> root.sh
 echo "exit 0" >> root.sh
-
-# Setup IPSec - adapted from Norris, P.
-echo "$LOCAL $FOREIGN : PSK \"$SECRET\"" > /etc/ipsec.secrets
-
-echo config setup > /etc/ipsec.conf
-echo -e "\tcharonstart=yes" >> /etc/ipsec.conf
-echo -e "\tcharondebug=\"dmn 3, mgr 3, ike 3, chd 3, job -1, cfg 3, knl 1, net 1, enc 2, lib -1\"">> /etc/ipsec.conf
-echo -e "\tplutostart=yes">> /etc/ipsec.conf
-echo -e "\tplutodebug=all">> /etc/ipsec.conf
-echo -e "\tplutostderrlog=/var/log/pluto.log">> /etc/ipsec.conf
-echo -e "\tnat_traversal=yes">> /etc/ipsec.conf
-echo -e "\tvirtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12">> /etc/ipsec.conf
-
-echo conn vpn >> /etc/ipsec.conf
-echo -e "\tauthby=secret">> /etc/ipsec.conf
-echo -e "\tauto=start">> /etc/ipsec.conf
-echo -e "\tkeyexchange=ikev2">> /etc/ipsec.conf
-echo -e "\tike=aes256-sha1-modp1024">> /etc/ipsec.conf
-echo -e "\tpfs=yes">> /etc/ipsec.conf
-echo -e "\ttype=tunnel">> /etc/ipsec.conf
-
-echo -e "\tleft=$LOCAL">> /etc/ipsec.conf
-echo -e "\tleftsubnet=$LOCAL/32">> /etc/ipsec.conf
-echo -e "\tright=$FOREIGN">> /etc/ipsec.conf
-echo -e "\trightsubnet=$FOREIGN/32">> /etc/ipsec.conf
 
 # Ensure files are executed at startup
 echo "#\!/bin/bash" > /etc/rc.local
