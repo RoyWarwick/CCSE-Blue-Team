@@ -153,6 +153,7 @@ organizationalUnitName		= Organizational Unit Name (eg, section)
 organizationalUnitName_default	= security
 
 commonName			= Common Name (e.g. server FQDN or YOUR name)
+commonName_default = unit
 commonName_max			= 64
 
 emailAddress			= Email Address
@@ -229,7 +230,7 @@ basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 
 [alt_names]
-IP.1=<local-IP>
+IP.1=<local-ip>
 
 [ v3_ca ]
 
