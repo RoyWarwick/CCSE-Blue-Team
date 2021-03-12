@@ -5,6 +5,11 @@ mkdir tmp
 
 #mosquitto -p 1883 > /dev/null & #start mosquitto broker
 
+curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/establish_connect.py
+curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/env_parser.py
+curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/phys_parser.py
+
+
 
 mosquitto_sub -p 1883 -t 'agr/env' > ./tmp/env_incoming & #start listener for incoming environment data connections
 python3 establish_connect.py env & #start the topic allocator for the environmental data
