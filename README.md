@@ -6,4 +6,4 @@ Make sure you're using a fresh install ubuntu machine
 2. chmod +x install_script
 3. ./install_script 
 4. follow the installation wizards for the dependencies (if any)
-+ Once completed a simple just go to your browser of choice and write "localhost" in the url
+5.  Once completed a simple just go to your browser of choice and write "localhost:5000" in the url
