@@ -1,0 +1,10 @@
+[{
+    "farm_id": 1,
+    "tunnel_id": 1,
+    "sensor_id": 1,
+    "time": "01:32:56",
+    "date": "23/02/2021",
+    "Alarm_sounding": "T",
+    "Pin_entered": "123A",
+    "Access_Granted": "IN/OUT/INVALID"
+}]

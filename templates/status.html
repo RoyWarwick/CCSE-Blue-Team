@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}
+Status
+{% endblock %}
+{% block content %}
+<body>
+  {% if not sensor %}
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Temperature</th>
+          <th scope="col">Humidity</th>
+        </tr>
+      </thead>
+      {% for sensor in sorted_array %}
+        {% if sensor[4] == "ht" %}
+          <tbody>
+            <tr class="table-danger">
+            <td>
+                <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                  <div class="card-header">Sensor Temperature</div>
+                  <div class="card-body">
+                  <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[2]|exception_handler}} level of temperature</p>
+                  </div>
+              </div>
+            </td>
+              <td>
+                <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+                  <div class="card-header">Sensor Humidity</div>
+                      <div class="card-body">
+                      <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[3]|exception_handler }} level of humidity</p>
+                  </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        {% elif sensor[4] == "t" and loop.nextitem is not defined %}
+        <tbody>
+            <tr class="table-danger">
+            <td>
+                <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                  <div class="card-header">Sensor Temperature</div>
+                  <div class="card-body">
+                  <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[2]|exception_handler}} level of temperature</p>
+                  </div>
+              </div>
+            </td>
+              <td>
+            </td>
+          </tr>
+          </tbody>
+        {% elif sensor[4] == "t" and loop.nextitem[4] == "h" and loop.nextitem is defined %}
+            <tbody>
+            <tr class="table-danger">
+            <td>
+                <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                  <div class="card-header">Sensor Temperature</div>
+                  <div class="card-body">
+                  <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[2]|exception_handler}} level of temperature</p>
+                  </div>
+              </div>
+            </td>
+              <td>
+                <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+                  <div class="card-header">Sensor Humidity</div>
+                      <div class="card-body">
+                      <h4 class="card-title">Tunnel:{{loop.nextitem[0]|exception_handler}} ID:{{loop.nextitem[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{loop.nextitem[3]|exception_handler }} level of humidity</p>
+                  </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        {% elif sensor[4] == "t" and loop.nextitem[4] == "t" and loop.nextitem is defined %}
+        <tbody>
+            <tr class="table-danger">
+            <td>
+                <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                  <div class="card-header">Sensor Temperature</div>
+                  <div class="card-body">
+                  <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[2]|exception_handler}} level of temperature</p>
+                  </div>
+              </div>
+            </td>
+              <td>
+            </td>
+          </tr>
+          </tbody>
+        {% elif sensor[4] == "h" and loop.nextitem is not defined and loop.previtem[4] =="t" %}
+        <tbody>
+            <tr class="table-danger">
+            <td>
+            </td>
+              <td>
+                <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+                  <div class="card-header">Sensor Humidity</div>
+                      <div class="card-body">
+                      <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[3]|exception_handler }} level of humidity</p>
+                  </div>
+              </div>
+            </td>
+          </tbody>
+      {% elif sensor[4] == "h" and loop.nextitem is not defined and loop.previtem[4] !="t" %}
+        <tbody>
+            <tr class="table-danger">
+            <td>
+            </td>
+              <td>
+                <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+                  <div class="card-header">Sensor Humidity</div>
+                      <div class="card-body">
+                      <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[3]|exception_handler }} level of humidity</p>
+                  </div>
+              </div>
+            </td>
+          </tbody>
+      {% elif sensor[4] == "h" and loop.nextitem[4] == "h" and loop.nextitem is defined and loop.previtem[4] !="t" %}
+        <tbody>
+            <tr class="table-danger">
+            <td>
+            </td>
+              <td>
+                <div class="card text-white bg-danger mb-3 " style="max-width: 20rem; flex: 60px auto">
+                  <div class="card-header">Sensor Humidity</div>
+                      <div class="card-body">
+                      <h4 class="card-title">Tunnel:{{sensor[0]|exception_handler}} ID:{{sensor[1]|exception_handler}}</h4>
+                      <p class="card-text">This sensor is {{sensor[3]|exception_handler }} level of humidity</p>
+                  </div>
+              </div>
+            </td>
+          </tbody>
+      {% endif %}
+      {% endfor %}
+    {% else %}
+        <img src="{{ url_for('static', filename='img/CALMYOURFARM.png')}}" class="center">
+        <div class="alert alert-dismissible alert-success">
+            <strong>Well done!</strong> You farm is nice and healthy, sit back and relax.
+        </div>
+    {% endif %}
+</table>
+{% endblock %}
+</body>>
