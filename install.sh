@@ -1,6 +1,7 @@
 #DONT RUN THE SCRIPT USING SUDO IT MESSES WITH THE PIP ISNTALLS
-sudo apt-get git
+sudo apt install git
 sudo apt install python3
+sudo apt install python3-virtualenv
 git clone https://github.com/RoyWarwick/CCSE-Blue-Team.git --branch GUI	#Downloads the project
 sudo chown -R $USER CCSE-Blue-Team
 cd CCSE-Blue-Team
