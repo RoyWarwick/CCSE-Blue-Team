@@ -33,7 +33,7 @@ def reroute():
 
 @app.route('/physicalAccess')
 def physicalAccess():
-    Physical_security_json = dataHandler.getPhysicalSecurityDate()
+    Physical_security_json = dataHandler.getPhysicalSecurityData()
     return render_template('physicalAccess.html', Physical_security_json = Physical_security_json)
 
 

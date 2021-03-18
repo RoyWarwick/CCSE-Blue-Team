@@ -1,15 +1,14 @@
 import json
 
 
-def getPhysicalSecurityDate():
+def getPhysicalSecurityData():
     global PHYSICAL_SECURITY_JSON
     with open('physical_security.json') as json_data:
         PHYSICAL_SECURITY_JSON = json.load(json_data)
-
     return PHYSICAL_SECURITY_JSON
 
 
-getPhysicalSecurityDate()
+getPhysicalSecurityData()
 
 
 def getData():
