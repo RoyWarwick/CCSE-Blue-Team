@@ -30,10 +30,10 @@ signed main(int argc, char * argv[]) {
 	keypad.setDebounceTime(50);
 	
 	pinMode(26, OUTPUT); // Blue LED
-	char hold[4], i = 22;
+	char i = 22;
 	char cmd[] = "htpasswd -bBv PINs \"\" xxxx > /dev/null 2> /dev/null";
-	char send[180];
-	sprintf(send,"mosquitto_pub -t security -m \"xxxxxxxxxx xxxxxx\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h %s",argv[1]);
+	char send[200];
+	sprintf(send,"mosquitto_pub             -m \"xxxxxxxxxx xxxxxx\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h %s -t \"%s\"",argv[1],argv[2]);
     while (1) {
         key = keypad.getKey();  //get the state of keys
         if (key) {// when a key is pressed

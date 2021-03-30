@@ -4,8 +4,8 @@
 #include <time.h>
 
 signed main(int argc, char * argv[]) {
-    char send[175];
-    sprintf(send, "mosquitto_pub -t security -m \"xxxxxxxxxx x\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h <local-IP>", argv[1]);
+    char send[200];
+    sprintf(send, "mosquitto_pub             -m \"xxxxxxxxxx x\" -p 8883 --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -h %s -t \"%s\"", argv[1],argv[2]);
     wiringPiSetup();
     pinMode(22,INPUT);
     

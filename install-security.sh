@@ -61,6 +61,7 @@ wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/return.sh?raw=true -O return.sh
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O x509/openssl.cnf
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/reg.sh?raw=true -O reg.sh
 
 # Set appropriate file permissions
 chmod 711 sensor off alarm MatrixKeypad return.sh
@@ -71,6 +72,7 @@ chmod 744 x509/openssl.cnf
 openssl genrsa -out /etc/mosquitto/certs/sec.key 4096
 cat /usr/security/x509/openssl.cnf | perl -p -e 's/<local-IP>/'$LOCAL'/' | tee /usr/security/x509/openssl.cnf
 echo -ne "\n\n\n\n\n\n\n\n\n" | openssl req -out /usr/security/x509/sec.csr -key /etc/mosquitto/certs/sec.key -new -config /usr/security/x509/openssl.cnf
+chmod 766 x509
 echo
 echo "A certificate signing request (/usr/security/x509/sec.csr) has been created."
 echo "A certificate authority must be trusted by both this unit and its aggregator; the certificate of which must be stored locally as /usr/security/x509/ca.crt"
@@ -89,8 +91,9 @@ echo "require_certificate true" >> /etc/mosquitto/mosquitto.conf
 # Create the root.sh file
 echo "#\!/bin/bash" > root.sh
 echo "cd /usr/security" >> root.sh
-echo "/usr/security/MatrixKeypad \"$LOCAL\" & disown" >> root.sh
-echo "/usr/security/sensor \"$LOCAL\" & disown" >> root.sh
+echo "TOPIC=$(/usr/security/reg.sh)"
+echo "/usr/security/MatrixKeypad \"$LOCAL\" $TOPIC & disown" >> root.sh
+echo "/usr/security/sensor \"$LOCAL\" $TOPIC & disown" >> root.sh
 echo "/usr/security/return.sh & disown" >> root.sh
 echo "mosquitto_sub -t \"security\" --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -p 8883 -h \"$LOCAL\" >> log & disown" >> root.sh
 echo "exit 0" >> root.sh
@@ -99,6 +102,8 @@ echo "exit 0" >> root.sh
 echo "#\!/bin/bash" > /etc/rc.local
 echo "/usr/security/root.sh" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
+
+echo "Installation complete."
 
 exit 0
 
