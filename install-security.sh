@@ -92,8 +92,8 @@ echo "require_certificate true" >> /etc/mosquitto/mosquitto.conf
 echo "#\!/bin/bash" > root.sh
 echo "cd /usr/security" >> root.sh
 echo "TOPIC=$(/usr/security/reg.sh)"
-echo "/usr/security/MatrixKeypad \"$LOCAL\" $TOPIC & disown" >> root.sh
-echo "/usr/security/sensor \"$LOCAL\" $TOPIC & disown" >> root.sh
+echo "/usr/security/MatrixKeypad \"$LOCAL\" \$TOPIC & disown" >> root.sh
+echo "/usr/security/sensor \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "/usr/security/return.sh & disown" >> root.sh
 echo "mosquitto_sub -t \"security\" --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -p 8883 -h \"$LOCAL\" >> log & disown" >> root.sh
 echo "exit 0" >> root.sh

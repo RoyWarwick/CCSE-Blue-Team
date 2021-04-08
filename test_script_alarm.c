@@ -10,8 +10,8 @@ signed main(void) {
         while (digitalRead(22) != HIGH);
         delay(100);
         if (digitalRead(23) == HIGH || digitalRead(24) == HIGH)
-            printf("OK: Sensor activated and alarm started.\n")
+            printf("OK: Sensor activated and alarm started.\n");
         else
-            printf("ERROR: Sensor activated but alarm not started.\n")
-    }    
+            printf("ERROR: Sensor activated but alarm not started.\n");
+    }
 }
