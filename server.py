@@ -1,10 +1,20 @@
 from flask import Flask, render_template
-from forms import SignUpForm
+from flask_wtf import FlaskForm, validators
+from wtforms import StringField, DateField
 from flask_bootstrap import Bootstrap
+from wtforms.validators import InputRequired
 import dataHandler
+import connectionHandler
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretRandomKey'
+
+class requestForm(FlaskForm):
+    farm_id = StringField("Farm_id", validators=[InputRequired()])
+    tunnel_id = StringField("Tunnel_id", validators=[InputRequired()])
+    sdate = DateField("Start Date", format='%d/%m/%Y', validators=[InputRequired()])
+    edate = DateField("End Date", format='%d/%m/%Y')
 
 global json_data
 
@@ -37,10 +47,23 @@ def physicalAccess():
     return render_template('physicalAccess.html', Physical_security_json = Physical_security_json)
 
 
-@app.route('/log')
+@app.route('/log', methods=['GET', 'POST'])
 def log():
-    form = SignUpForm()
-    return render_template('log.html', form=form)
+    form = requestForm()
+
+    if form.validate():
+
+        print(form.sdate.data, form.edate.data)
+        string_to_arno = "{},{},{},{}".format(form.farm_id.data, form.tunnel_id.data, form.sdate.data, form.edate.data)
+        send_to_arno = open("send_to_arno","w")
+        send_to_arno.write(string_to_arno)
+        send_to_arno.close()
+        connectionHandler.sendFile(send_to_arno)
+        return render_template('log.html', form=form)
+    else:
+        return render_template('log.html', form=form)
+
+
 
 
 @app.route('/status')
@@ -60,4 +83,4 @@ def status():
 
 if __name__ == '__main__':
     Bootstrap(app)
-    app.run()
+    app.run(debug=True)

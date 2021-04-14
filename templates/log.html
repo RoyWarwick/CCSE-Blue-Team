@@ -5,23 +5,81 @@ Log
 
 {% block content %}
 <h2> Sign Up </h2>
-<form action="" method="post">
+<form action="{{ url_for('log') }}" method="post">
+    {{ form.csrf_token }}
     <p>
-        {{form.username.label}} <br>
-        {{form.username(size=30)}}
-    </p>
-    <p>
-        {{form.password.label}} <br>
-        {{form.password(size=30)}}
-    </p>
-    <p>
-        {{form.submit()}}
+        {{form.farm_id.label}}
+        {{form.farm_id(size=30)}}
+        <ul>
+        {% for error in form.farm_id.errors %}
+        <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        {{form.tunnel_id.label}}
+        {{form.tunnel_id(size=30)}}
+
+        <ul>
+        {% for error in form.tunnel_id.errors %}
+        <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        {{form.sdate.label}}
+        {{form.sdate(size=30)}}
+
+        <ul>
+        {% for error in form.sdate.errors %}
+        <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        {{form.edate.label}}
+        {{form.edate(size=30)}}
+        <input type="submit" value="Submit">
     </p>
 </form>
 <div class="alert alert-dismissible alert-warning">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   <h4 class="alert-heading">Warning!</h4>
   <p class="mb-0">This page is not complete yet. It will be soon.</p>
+
+        <fieldset class="form-group">
+      <legend>Radio buttons</legend>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+          Option one is this and that—be sure to include why it's great
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+          Option two can be something else and selecting it will deselect option one
+        </label>
+      </div>
+      <div class="form-check disabled">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled="">
+          Option three is disabled
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="form-group">
+      <legend>Checkboxes</legend>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="" checked="">
+          Option one is this and that—be sure to include why it's great
+        </label>
+      </div>
+      <div class="form-check disabled">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="" disabled="">
+          Option two is disabled
+        </label>
+      </div>
+    </fieldset>
 </div>
 
 {% endblock %}

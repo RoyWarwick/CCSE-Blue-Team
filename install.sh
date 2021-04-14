@@ -1,4 +1,4 @@
-#DONT RUN THE SCRIPT USING SUDO IT MESSES WITH THE PIP ISNTALLS
+#DONT RUN THE SCRIPT USING SUDO IT MESSES WITH THE PIP INSTALLS
 sudo apt install git
 sudo apt install python3
 sudo apt install python3-virtualenv
