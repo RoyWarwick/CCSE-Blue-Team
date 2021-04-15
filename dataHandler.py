@@ -1,4 +1,5 @@
 import json
+import connectionHandler
 
 
 def getPhysicalSecurityData():
@@ -13,6 +14,10 @@ getPhysicalSecurityData()
 
 def getData():
     global JSON_FILE
+    try:
+        connectionHandler.recieveFileRealTime()
+    except:
+        None
     with open('jsonData.json') as json_data:
         JSON_FILE = json.load(json_data)
 
@@ -20,6 +25,26 @@ def getData():
 
 
 getData()
+
+
+def getAPIData():
+    with open("APIRequest.json") as api_data:
+        API_DATA = json.load(api_data)
+    API_DATA
+    sensor_array = []
+    tmp_array = []
+    tunnels = API_DATA["tunnel_id"]
+    for key, value in tunnels.items():
+        tmp_array = [key]  # Tunnel_id
+        for sensor in value:
+            tmp_array = [key,
+                         sensor]  # ["tunnel_id", {'sensor_id': 1, 'time': '14:55:30', 'date': '03/02/2021', 'Temp_C': 22, 'Humidity': 12}],
+            sensor_array.append(tmp_array)  # [[tunnel_id, sensor_dictionary],[tunnel_id, sensor_dictionary],....]
+            """
+            for k, v in sensor.items():
+                print(f"{k}: {v}")
+            """
+    return sensor_array
 
 
 def getSecurityDate():

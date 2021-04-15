@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm, validators
 from wtforms import StringField, DateField
 from flask_bootstrap import Bootstrap
 from wtforms.validators import InputRequired
+from datetime import date
 import dataHandler
 import connectionHandler
 
@@ -11,10 +12,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SecretRandomKey'
 
 class requestForm(FlaskForm):
-    farm_id = StringField("Farm_id", validators=[InputRequired()])
-    tunnel_id = StringField("Tunnel_id", validators=[InputRequired()])
-    sdate = DateField("Start Date", format='%d/%m/%Y', validators=[InputRequired()])
-    edate = DateField("End Date", format='%d/%m/%Y')
+    farm_id = StringField("Farm_id", validators=[InputRequired("Which farm are you referencing")])
+    tunnel_id = StringField("Tunnel_id", validators=[InputRequired("Which tunnel are you referencing")])
+    sdate = DateField("Start Date", format='%d/%m/%Y', validators=[InputRequired("From which date onwards do you want the data?")])
+    edate = DateField("End Date", format='%d/%m/%Y', default=date.today(), validators=[InputRequired("Till which date do you want the data?")])
 
 global json_data
 
@@ -50,18 +51,21 @@ def physicalAccess():
 @app.route('/log', methods=['GET', 'POST'])
 def log():
     form = requestForm()
-
-    if form.validate():
-
-        print(form.sdate.data, form.edate.data)
+    APIRequest = []
+    if form.validate_on_submit():
         string_to_arno = "{},{},{},{}".format(form.farm_id.data, form.tunnel_id.data, form.sdate.data, form.edate.data)
         send_to_arno = open("send_to_arno","w")
         send_to_arno.write(string_to_arno)
         send_to_arno.close()
+        print(string_to_arno)
         connectionHandler.sendFile(send_to_arno)
-        return render_template('log.html', form=form)
+        try:
+            APIRequest = dataHandler.getAPIData()
+        except TypeError:
+            None
+        return render_template('log.html', APIRequest = APIRequest, form=form)
     else:
-        return render_template('log.html', form=form)
+        return render_template('log.html', APIRequest = APIRequest, form=form)
 
 
 
@@ -83,4 +87,4 @@ def status():
 
 if __name__ == '__main__':
     Bootstrap(app)
-    app.run(debug=True)
+    app.run()

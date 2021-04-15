@@ -4,7 +4,6 @@ Log
 {% endblock %}
 
 {% block content %}
-<h2> Sign Up </h2>
 <form action="{{ url_for('log') }}" method="post">
     {{ form.csrf_token }}
     <p>
@@ -39,47 +38,46 @@ Log
         <input type="submit" value="Submit">
     </p>
 </form>
-<div class="alert alert-dismissible alert-warning">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <h4 class="alert-heading">Warning!</h4>
-  <p class="mb-0">This page is not complete yet. It will be soon.</p>
 
-        <fieldset class="form-group">
-      <legend>Radio buttons</legend>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-          Option one is this and that—be sure to include why it's great
-        </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
-          Option two can be something else and selecting it will deselect option one
-        </label>
-      </div>
-      <div class="form-check disabled">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled="">
-          Option three is disabled
-        </label>
-      </div>
-    </fieldset>
-    <fieldset class="form-group">
-      <legend>Checkboxes</legend>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="" checked="">
-          Option one is this and that—be sure to include why it's great
-        </label>
-      </div>
-      <div class="form-check disabled">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="" disabled="">
-          Option two is disabled
-        </label>
-      </div>
-    </fieldset>
-</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Farm</th>
+      <th scope="col">ID</th>
+      <th scope="col">Humidity</th>
+      <th scope="col">Temperature</th>
+      <th scope="col">Date</th>
+      <th scope="col">Time</th>
+    </tr>
+  </thead>
+{% for sensor in APIRequest %}
+    {% if sensor[1].Temp_C < 23.001 and sensor[1].Temp_C > 21.999 and sensor[1].Humidity < 50.001 and sensor[1].Humidity > 48.999 %}
+    <tbody>
+      <tr class="table-success">
+      <th scope="row">{{sensor[0]}}</th>
+      <th scope="row">{{sensor[1].sensor_id}}</th>
+      <td>{{sensor[1].Humidity}}</td>
+      <td>{{sensor[1].Temp_C}}</td>
+      <td>{{sensor[1].date}}</td>
+      <td>{{sensor[1].time}}</td>
+    </tr>
+    </tbody>
+{% else %}
+    <tbody>
+      <tr class="table-danger">
+      <th scope="row">{{sensor[0]}}</th>
+      <th scope="row">{{sensor[1].sensor_id}}</th>
+      <td>{{sensor[1].Humidity}}</td>
+      <td>{{sensor[1].Temp_C}}</td>
+      <td>{{sensor[1].date}}</td>
+      <td>{{sensor[1].time}}</td>
+    </tr>
+    </tbody>
+{% endif %}
 
+{% endfor %}
+</table>
+    <h4>Fore more information on the specific sensors check the <a href = "status" style="color:blue">Status</a> page</h4>
 {% endblock %}
+</body>
+
