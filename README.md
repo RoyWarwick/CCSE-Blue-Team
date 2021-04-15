@@ -11,10 +11,10 @@ Make sure you're using a fresh install ubuntu machine
 + It's worth noting once you run the install script it will start hosting the website immediately.
 
 
-##How to host the website once installation has already taken place
+## How to host the website once installation has already taken place
 In the directory that you used to install the project use the following commands in the terminal
 1. cd CCSE-Blue-Team
 2. source ./venv/bin/activate
 3. python3 server.py
-###This will start hosting the website locally
+### This will start hosting the website locally
 +  Type **localhost:5000** in the url of the browser of your choice
