@@ -1,0 +1,28 @@
+Pre-shared keys
+Pros:
+    Convenience--no need to go through the complicated process of obtaining a certificate
+
+Cons:
+
+    If a key is compromised, unauthorized access to the network may be obtained
+    There are more opportunities to get the key because the it is stored on all the IPsec peer systems
+    There is no way to automatically notify the IPsec peers the pre-shared key has been compromised
+    Replacing the pre-shared key requires updating it on all systems, which can be tedious
+    Pre-shared keys are limited to a maximum size of 64 bytes (512 bits)
+
+
+Certificates
+Pros:
+
+    The key used to generate certificates is stored in a single location, separate from the systems using the certificates
+    All systems may be notified of a certificate's compromise via a certificate revocation list (CRL)
+    A compromised certificate only needs to be replaced on the system to which the certificate belongs
+    The public key embedded in a certificate may be larger than a pre-shared key (1024, 2048, 4096, or more)
+
+Cons:
+
+    Creating/obtaining a certificate is more complicated, time consuming and potentially expensive than using a pre-shared key
+
+
+TO DO:
+put CA certs in vpn directories, ask if x509, configure ipsec settings, change alll key permissions to 600.

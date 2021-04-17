@@ -1,0 +1,18 @@
+ifconfig eth1 hw ether 50:00:bb:11:11:11
+ifconfig eth2 hw ether 50:00:bb:22:22:22
+
+ifconfig eth1 10.0.0.1/27
+ifconfig eth2 198.51.100.2/24
+
+route add default gw 198.51.100.1
+
+#iptables -P FORWARD DROP
+
+#iptables -A FORWARD -s 10.0.0.2 -d 172.22.22.40/29 -j ACCEPT
+#iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+#iptables -A FORWARD -s 172.22.22.40/29 -d 10.0.0.2 -j ACCEPT
+#iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE
+
+sysctl -p
+
+service ipsec start

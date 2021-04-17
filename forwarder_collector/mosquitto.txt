@@ -1,0 +1,12 @@
+mosquitto
+
+Broker:
+mosquitto -p 5000
+
+Sub:
+mosquitto_sub -t farm/sensor -p 5000
+
+Pub:
+mosquitto_pub -t[topic] farm/sensor -p[port] 5000 -f[file] testfile
+
+#https://mosquitto.org/blog/2013/01/mosquitto-debian-repository/
