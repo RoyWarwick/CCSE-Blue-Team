@@ -74,9 +74,20 @@ cat /usr/security/x509/openssl.cnf | perl -p -e 's/<local-IP>/'$LOCAL'/' | tee /
 echo -ne "\n\n\n\n\n\n\n\n\n" | openssl req -out /usr/security/x509/sec.csr -key /etc/mosquitto/certs/sec.key -new -config /usr/security/x509/openssl.cnf
 chmod 766 x509
 echo
+echo "x509 Requirements"
+echo "-----------------"
+echo
 echo "A certificate signing request (/usr/security/x509/sec.csr) has been created."
 echo "A certificate authority must be trusted by both this unit and its aggregator; the certificate of which must be stored locally as /usr/security/x509/ca.crt"
-echo "The certificate signing request must be signed by that certificate authority, using /usr/security/x509/openssl.cnf as the config file, and the certifiate stored locally as /usr/security/x509/sec.crt"
+echo "The certificate signing request must be signed by that certificate authority, using /usr/security/x509/openssl.cnf as the config file (see note 3 below), and the certifiate stored locally as /usr/security/x509/sec.crt"
+echo
+echo "Notes: 1) A certificate authority's keys may be generated using: "
+echo "-----      openssl genrsa -out ca.key 4096"
+echo "       2) A certificate authority may create a self-signed certificate using:"
+echo "           openssl req -new -x509 -days 365 -key ca.key -out ca.crt"
+echo "       3) A certificate authority may sign a certificate signing request with a config file 'openssl.cnf' using:"
+echo "           openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -extensions v3_req -extfile openssl.cnf"
+echo
 echo -n "Press enter one this is done..."
 read
 
