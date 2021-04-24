@@ -1,8 +1,5 @@
 /**********************************************************************
-* Filename    : MatrixKeypad.cpp
-* Description : Obtain the key code of 4x4 Matrix Keypad
-* Author      : www.freenove.com
-* modification: 2019/12/27
+Program adapted from www.freenove.com
 **********************************************************************/
 #include "Keypad.hpp"
 #include <stdio.h>

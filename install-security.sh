@@ -48,8 +48,6 @@ rm -r security 2> /dev/null # Remove any previous installations
 mkdir security
 cd security
 mkdir x509
-touch log
-chmod 755 log
 touch root.sh
 chmod 711 root.sh
 
@@ -59,7 +57,6 @@ wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/off?raw=true -O 
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -O alarm
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/return.sh?raw=true -O return.sh
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O x509/openssl.cnf
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/reg.sh?raw=true -O reg.sh
 
@@ -86,7 +83,7 @@ echo "-----      openssl genrsa -out ca.key 4096"
 echo "       2) A certificate authority may create a self-signed certificate using:"
 echo "           openssl req -new -x509 -days 365 -key ca.key -out ca.crt"
 echo "       3) A certificate authority may sign a certificate signing request with a config file 'openssl.cnf' using:"
-echo "           openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -extensions v3_req -extfile openssl.cnf"
+echo "           openssl x509 -req -in sec.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out sec.crt -days 365 -extensions v3_req -extfile openssl.cnf"
 echo
 echo -n "Press enter one this is done..."
 read
@@ -105,8 +102,6 @@ echo "cd /usr/security" >> root.sh
 echo "TOPIC=$(/usr/security/reg.sh)"
 echo "/usr/security/MatrixKeypad \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "/usr/security/sensor \"$LOCAL\" \$TOPIC & disown" >> root.sh
-echo "/usr/security/return.sh & disown" >> root.sh
-echo "mosquitto_sub -t \"security\" --cafile /usr/security/x509/ca.crt --cert /usr/security/x509/sec.crt --key /etc/mosquitto/certs/sec.key -p 8883 -h \"$LOCAL\" >> log & disown" >> root.sh
 echo "exit 0" >> root.sh
 
 # Ensure files are executed at startup
