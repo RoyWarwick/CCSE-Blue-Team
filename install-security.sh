@@ -49,7 +49,7 @@ mkdir security
 cd security
 mkdir x509
 touch root.sh
-chmod 711 root.sh
+chmod 755 root.sh
 
 # Get files from github
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/sensor?raw=true -O sensor
@@ -57,19 +57,19 @@ wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/off?raw=true -O 
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -O alarm
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O x509/openssl.cnf
+wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O openssl.cnf
 wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/reg.sh?raw=true -O reg.sh
 
 # Set appropriate file permissions
-chmod 711 sensor off alarm MatrixKeypad return.sh
+chmod 755 sensor off alarm MatrixKeypad reg.sh
 chmod 777 PINs
-chmod 744 x509/openssl.cnf
 
 # Create TLS files
 openssl genrsa -out /etc/mosquitto/certs/sec.key 4096
-cat /usr/security/x509/openssl.cnf | perl -p -e 's/<local-IP>/'$LOCAL'/' | tee /usr/security/x509/openssl.cnf
+cat /usr/security/openssl.cnf | perl -p -e 's/<local-ip>/'$LOCAL'/' | tee /usr/security/x509/openssl.cnf
 echo -ne "\n\n\n\n\n\n\n\n\n" | openssl req -out /usr/security/x509/sec.csr -key /etc/mosquitto/certs/sec.key -new -config /usr/security/x509/openssl.cnf
-chmod 766 x509
+rm /usr/security/openssl.cnf
+chmod 777 x509 x509/*
 echo
 echo "x509 Requirements"
 echo "-----------------"
@@ -99,7 +99,7 @@ echo "require_certificate true" >> /etc/mosquitto/mosquitto.conf
 # Create the root.sh file
 echo "#\!/bin/bash" > root.sh
 echo "cd /usr/security" >> root.sh
-echo "TOPIC=$(/usr/security/reg.sh)"
+echo "TOPIC=$(/usr/security/reg.sh $LOCAL)" >> root.sh
 echo "/usr/security/MatrixKeypad \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "/usr/security/sensor \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "exit 0" >> root.sh
@@ -110,6 +110,7 @@ echo "/usr/security/root.sh" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 echo "Installation complete."
+echo "Restart the machine to use it."
 
 exit 0
 
