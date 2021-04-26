@@ -9,19 +9,6 @@ echo "| Installation Script |"
 echo "+---------------------+"
 echo
 
-# User information
-echo Requirements
-echo ============
-echo "This script ought to be run as the superuser on a Raspberry Pi with the correct hardware connected to the GPIO pins."
-echo "The unit needs to be able to route IPv4 packets to an aggregator."
-echo "This installation script requires the IPv4 addresses of both units for routing packets."
-echo
-echo Prompt
-echo ======
-echo "You may use a signal interrupt to exit, or"
-echo -n "Press enter to continue..."
-read
-
 if [[ $EUID != 0 ]]
 then
     echo "This script must be run as the superuser." >&2
@@ -29,12 +16,8 @@ then
     exit 1
 fi
 
-echo -n "Provide local IPv4 address: "
-read
-LOCAL=$REPLY
-echo -n "Provide foreign IPv4 address: "
-read
-FOREIGN=$REPLY
+LOCAL="192.168.0.4"
+FOREIGN="192.168.0.2"
 
 echo "Installation starting..."
 
@@ -110,7 +93,7 @@ echo "/usr/security/root.sh" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 echo "Installation complete."
-echo "Restart the machine to use it."
+echo "Restarting..."
 
 exit 0
 
