@@ -1,2 +1,0 @@
-mosquitto_sub -t "security" --cafile /etc/mosquitto/certs/ca.crt --cert /etc/mosquitto/certs/server.crt --key /etc/mosquitto/certs/server.key -p 8883 -h "192.168.1.66"
-mosquitto_pub -m "Roy" -t "security" -p 8883 --cafile certs/ca.crt --cert certs/sec.crt --key certs/sec.key -h "192.168.1.66"
