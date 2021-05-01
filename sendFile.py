@@ -11,7 +11,7 @@ BUFFER_SIZE = 1024 * 4 #4KB
 def send_file(filename):
     try:
         host = "192.168.255.2"
-        port = 5002
+        port = 5001
         # get the file size
         filename = filename.name
         filesize = os.path.getsize(filename)
