@@ -1,9 +1,17 @@
 import json
-import connectionHandler
+import time
+
+import recieveFile
 
 
 def getPhysicalSecurityData():
     global PHYSICAL_SECURITY_JSON
+    try:
+        start = time.time()
+        while time.time() < start + 5:
+            recieveFile.get_data()
+    except:
+        None
     with open('physical_security.json') as json_data:
         PHYSICAL_SECURITY_JSON = json.load(json_data)
     return PHYSICAL_SECURITY_JSON
@@ -15,7 +23,9 @@ getPhysicalSecurityData()
 def getData():
     global JSON_FILE
     try:
-        connectionHandler.recieveFileRealTime()
+        start = time.time()
+        while time.time() < start + 5:
+            recieveFile.get_data()
     except:
         None
     with open('jsonData.json') as json_data:
@@ -30,7 +40,6 @@ getData()
 def getAPIData():
     with open("APIRequest.json") as api_data:
         API_DATA = json.load(api_data)
-    API_DATA
     sensor_array = []
     tmp_array = []
     tunnels = API_DATA["tunnel_id"]
@@ -45,16 +54,6 @@ def getAPIData():
                 print(f"{k}: {v}")
             """
     return sensor_array
-
-
-def getSecurityDate():
-    global SECURITY_FILE
-    with open('physical_security.json') as security_data:
-        SECURITY_FILE = json.load(security_data)
-    return SECURITY_FILE
-
-
-getSecurityDate()
 
 
 def getSensorInfo():

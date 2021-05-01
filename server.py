@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from wtforms.validators import InputRequired
 from datetime import date
 import dataHandler
-import connectionHandler
+import sendFile
 
 
 app = Flask(__name__)
@@ -57,8 +57,7 @@ def log():
         send_to_arno = open("send_to_arno","w")
         send_to_arno.write(string_to_arno)
         send_to_arno.close()
-        print(string_to_arno)
-        connectionHandler.sendFile(send_to_arno)
+        sendFile.send_file(send_to_arno)
         try:
             APIRequest = dataHandler.getAPIData()
         except TypeError:
@@ -66,8 +65,6 @@ def log():
         return render_template('log.html', APIRequest = APIRequest, form=form)
     else:
         return render_template('log.html', APIRequest = APIRequest, form=form)
-
-
 
 
 @app.route('/status')
