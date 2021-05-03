@@ -3,23 +3,13 @@
 rm -r ./tmp > /dev/null
 mkdir tmp
 
-#mosquitto -p 1883 > /dev/null & #start mosquitto broker
+mosquitto_sub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/env' > ./tmp/env_incoming & #start listener for incoming environment data connections
+python3 establish_connect.py env $ip & #start the topic allocator for the environmental data
 
-curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/establish_connect.py
-curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/env_parser.py
-curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/phys_parser.py
+mosquitto_sub -p 8883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/phys' > ./tmp/phys_incoming & #start listener for incoming physical data connections
+python3 establish_connect.py phys $ip > /dev/null & #start the topic allocator for the physical security data
 
-
-
-mosquitto_sub -p 1883 -t 'agr/env' > ./tmp/env_incoming & #start listener for incoming environment data connections
-python3 establish_connect.py env & #start the topic allocator for the environmental data
-
-mosquitto_sub -p 1883 -t 'agr/phys' > ./tmp/phys_incoming & #start listener for incoming physical data connections
-python3 establish_connect.py phys > /dev/null & #start the topic allocator for the physical security data
-
-
-#mosquitto_sub -p 1883 -t '$SYS/broker/clients/connected' >> ./tmp/connected &
-
+echo "Start Successful"
 
 exit 0
 

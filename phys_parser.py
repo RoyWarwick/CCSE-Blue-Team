@@ -4,7 +4,25 @@ import os
 import random
 import string
 from datetime import datetime
+from uuid import _ip_getnode as getmac
 
+mac_raw = getmac()
+mac_hex = str(hex(mac_raw))[2:]
+
+while(len(mac_hex) < 12):
+	mac_hex = '0' + mac_hex
+
+mac_pos = 0
+mac = ""
+
+while(mac_pos < 12):
+	if (mac_pos % 2 == 0):
+		mac += mac_hex[mac_pos]
+	else:
+		mac+= mac_hex[mac_pos] + ':'
+	mac_pos += 1
+
+mac = mac[:-1]
 
 #There will be an open mosquitto subscriber for the topic associated with the sensor id (agr/phys_sensor_<sensor_id>)
 #this subscriber will output to the file ./tmp/phys_sensor_<sensor_id>
@@ -70,11 +88,14 @@ while(i==0): #Run for limited iterations for testing purposes
 			
 			
 		if(data[1] == "A"): #if an alarm was triggered
-			writefile = open("json_struct_phys_" + str(sensor_id) + ".txt", "a") #As the notifications are made available, they are converted to json and pushed to this file, ready to be read from
+			#writefile = open("json_struct_phys_" + str(sensor_id) + ".txt", "a") #As the notifications are made available, they are converted to json and pushed to this file, ready to be read from
 		
-			writefile.write("{\"farm_id\" : 1, \"tunnel_id\": 1, \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"T\", \"Pin_entered\": \"NULL\", \"Access_Granted\": \"INVALID\"} \n")
+			#writefile.write("{\"farm_id\" : 1, \"tunnel_id\": 1, \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"T\", \"Pin_entered\": \"NULL\", \"Access_Granted\": \"INVALID\"} \n")
 				
-			writefile.close()
+			os.system("mosquitto_pub -p 1883 -h 192.168.0.254 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'fwd/aggr_phys_in' -m \" {\"farm_id\" : 1, \"tunnel_id\": \"" + mac + "\", \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"T\", \"Pin_entered\": \"NULL\", \"Access_Granted\": \"INVALID\"}, \"")	
+				
+			
+			#writefile.close()
 		else:
 			print("Pin entered")
 			
@@ -90,11 +111,15 @@ while(i==0): #Run for limited iterations for testing purposes
 			elif(data[1][5] == "F"):
 				granted = "INVALID"
 				
-			writefile = open("json_struct_phys_" + str(sensor_id) + ".txt", "a") #As the notifications are made available, they are converted to json and pushed to this file, ready to be read from
+			#writefile = open("json_struct_phys_" + str(sensor_id) + ".txt", "a") #As the notifications are made available, they are converted to json and pushed to this file, ready to be read from
 			
-			writefile.write("{\"farm_id\" : 1, \"tunnel_id\": 1, \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"F\", \"Pin_entered\": \"" + data[1][:4] + "\", \"Access_Granted\": \"" + granted + "\"}, \n")
+			#writefile.write("{\"farm_id\" : 1, \"tunnel_id\": 1, \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"F\", \"Pin_entered\": \"" + data[1][:4] + "\", \"Access_Granted\": \"" + granted + "\"}, \n")
 			
-			writefile.close()
+			#writefile.close()
+			
+			os.system("mosquitto_pub -p 1883 -h 192.168.0.254 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'fwd/aggr_phys_in' -m \"{\"farm_id\" : 1, \"tunnel_id\": 1, \"sensor_id\": " + str(sensor_id) + ", \"time\": \"" + date_time_str[1] + "\", \"date\": \"" + date_time_str[0] + "\", \"Alarm_sounding\": \"F\", \"Pin_entered\": \"" + data[1][:4] + "\", \"Access_Granted\": \"" + granted + "\"},\"")
+			
+			
 			
 	time.sleep(1)
 	#i+=1

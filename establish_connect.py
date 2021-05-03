@@ -30,7 +30,6 @@ else: #The program has been given additional arguments that do not indicate conn
 	exit("Not a valid usage, to call the program use: \n'python3 establish_connection.py <value>' \nWhere <value> is either 'env' or 'phys'")
 
 
-
 incoming = open("./tmp/" + type_connect + "_incoming", 'r') #open the file that the mosquitto topic is publishing to, as defined in startup.sh
 
 next_sensor_id = 1 #The ID of the next sensor to add
@@ -45,10 +44,10 @@ while(i==0): #For a general system this will run indefinitely checking for new c
 			#print(int(current)) #The expected value should be a random integer from the sensor
 			
 			#Start a mosquitto topic and file, each associated with the next_sensor_id, will be of form (mosquitto_sub -p 1883 -t 'agr/env_sensor_1' > ./tmp/env_sensor_1 &)
-			os.system("mosquitto_sub -p 1883 -t 'agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "' > ./tmp/" + type_connect + "_sensor_" + str(next_sensor_id) + " &")
+			os.system("mosquitto_sub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "' > ./tmp/" + type_connect + "_sensor_" + str(next_sensor_id) + " &")
 			
 			#publish to the response topic associating a random number with the topic so that sensors who published said number can connect to it.
-			os.system("mosquitto_pub -p 1883 -t 'agr/" + type_connect + "_response' -m \"" + current[:-1] + " agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "\"")
+			os.system("mosquitto_pub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_response' -m \"" + current[:-1] + " agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "\"")
 			
 			#The parsing program is responsible for the mosquitto topic, including ensuring only one sensor is connected.
 			

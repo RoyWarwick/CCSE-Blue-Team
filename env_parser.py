@@ -33,19 +33,13 @@ while(nextline != ""): #while there is still data to be read from the sensors wi
 			
 chosen = incoming[random.randint(0,len(incoming)-1)] #choose one of the integers read in from the file
 
-#print("I gots this far")
-#print(incoming)
-#print(chosen)
 
 if(legacyline[:3] == "red"): #This needs to be altered before being placed on the live test system to read == not !=
 	exit("the legacyline is a reserve command from an aggregator so something has gone wrong, the system may be using files that were not properly cleared in the previous run")
 
-#print("I have printed the res command")
 os.system("mosquitto_pub -p 1883 -t 'agr/env_sensor_" + str(sensor_id) + "' -m \"res " + chosen[:-1] + "\"") #publish back to the topic the chosen random number
-#print("okay, no more res")
 
-
-time.sleep(1) #
+time.sleep(1)
 	
 nextline = data_in.readline() #This should be the res which was sent by the aggregator (this is commented out to allow the aggregator to work with static files for testing purposes)
 #print("nextline here is: "+nextline)	
@@ -64,11 +58,14 @@ while(i==0): #as with establish_connect.py this is for testing purposes to have 
 			data[2] = data[2][2:] #remove the 'T='
 			data[3] = data[3][2:] #remove the 'H='
 			
-			writefile = open("json_struct_sensor_" + str(sensor_id) + ".txt", "a")
+			#writefile = open("json_struct_sensor_" + str(sensor_id) + ".txt", "a")
 			
-			writefile.write("{\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "}, \n") #write the json structure to the file
+			#writefile.write("{\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "}, \n") #write the json structure to the file
 			
-			writefile.close()
+			os.system("mosquitto_pub -p 1883 -h 192.168.0.254 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'fwd/aggr_env_in' -m \"{\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "},\"")
+			
+			
+			#writefile.close()
 		except:
 			time.sleep(0.1)
 	time.sleep(3)
