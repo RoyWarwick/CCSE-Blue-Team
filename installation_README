@@ -1,0 +1,11 @@
+In order to install the Aggregator component:
+
+Create a directory within the home directory from which you wish the aggregator to run.
+
+Pull installer.sh from the github to this directory.
+
+Run installer.sh with sudo permissions to prepare the environment.
+
+installer.sh will pull all nessessary files from Github, as well as installing needed programs and placing files in the correct directories
+
+To start the Aggregator, once the installer has run, exectue starter.sh which the installer will have pulled from the github into the same directory

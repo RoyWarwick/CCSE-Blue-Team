@@ -13,7 +13,7 @@ curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/establish_connect.py
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/env_parser.py
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/phys_parser.py
-#curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/mosquitto.conf
+curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Aggregator/mosquitto.conf
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Security/x509/agg.crt
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Security/x509/agg.key
 curl -LJO https://raw.githubusercontent.com/RoyWarwick/CCSE-Blue-Team/Security/x509/ca.crt
@@ -32,8 +32,6 @@ chmod 644 /etc/mosquitto/certs/agg.key
 mv ca.crt /etc/mosquitto/ca_certificates/
 
 chmod 644 /etc/mosquitto/ca_certificates/ca.crt
-
-service start mosquitto
 
 
 echo "Install successful"
