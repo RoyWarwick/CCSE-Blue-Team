@@ -25,6 +25,8 @@ echo "Installation starting..."
 apt update
 apt-get install -y openssl strongswan apache2-utils mosquitto mosquitto-clients
 
+START="$(dirname $(readlink -f $0))"
+
 # Place files in correct place
 cd /usr
 rm -r security 2> /dev/null # Remove any previous installations
@@ -34,17 +36,17 @@ mkdir x509
 touch root.sh
 chmod 755 root.sh
 
-# Get files from github
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/sensor?raw=true -O sensor
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/off?raw=true -O off
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/alarm?raw=true -O alarm
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/PINs?raw=true -O PINs
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/MatrixKeypad?raw=true -O MatrixKeypad
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/openssl.cnf?raw=true -O openssl.cnf
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/reg.sh?raw=true -O reg.sh
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/x509/ca.crt?raw=true -O x509/ca.crt
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/x509/sec.key?raw=true -O /etc/mosquitto/certs/sec.key
-wget https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Security/x509/sec.crt?raw=true -O x509/sec.crt
+# Place files in the correct places
+cp $START/sensor sensor
+cp $START/off off
+cp $START/alarm alarm
+cp $START/PINs PINs
+cp $START/MatrixKeypad MatrixKeypad
+cp $START/openssl.cnf openssl.cnf
+cp $START/reg.sh reg.sh
+cp $START/x509/ca.crt x509/ca.crt
+cp $START/x509/sec.key /etc/mosquitto/certs/sec.key
+cp $START/x509/sec.crt x509/sec.crt
 
 # Set appropriate file permissions
 chmod 755 sensor off alarm MatrixKeypad reg.sh
