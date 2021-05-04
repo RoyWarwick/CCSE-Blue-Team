@@ -29,11 +29,11 @@ DHT_PIN = 4 # DHT sensor GPIO
 n=random.randint(-92233720368547758,92233720368547758)
 #random integer to supply to aggregator for topic assignment
 
-publish.single(topic="agr/env", payload=n, hostname="192.168.0.2", port=8883, tls={'ca_certs':"/etc/mosquitto/ca_certificates/env.crt",'certfile':"/etc/mosquitto/certs/env.csr",'keyfile':"/etc/mosquitto/certs/env.key",})
+publish.single(topic="agr/env", payload=n, hostname="192.168.0.2", port=8883, tls={'ca_certs':"/etc/mosquitto/ca_certificates/ca.crt",'certfile':"/etc/mosquitto/certs/env.crt",'keyfile':"/etc/mosquitto/certs/env.key",})
 #send the random integer
 
 # topic assignment
-message = subscribe.simple("agr/env_response", hostname="192.168.0.2", port=8883,tls={'ca_certs':"/etc/mosquitto/ca_certificates/env.crt",'certfile':"/etc/mosquitto/certs/env.csr",'keyfile':"/etc/mosquitto/certs/env.key",})
+message = subscribe.simple("agr/env_response", hostname="192.168.0.2", port=8883,tls={'ca_certs':"/etc/mosquitto/ca_certificates/ca.crt",'certfile':"/etc/mosquitto/certs/env.crt",'keyfile':"/etc/mosquitto/certs/env.key",})
         # subscribe to the aggregator topic
         # that assigns the correct sensor topic
 
@@ -87,7 +87,7 @@ try:
     
 #publishing to aggregator on the topic received from the aggregator
     
-    publish.single(topic=topicfinal, payload=s, hostname="192.168.0.2", port=8883, tls={'ca_certs':"/etc/mosquitto/ca_certificates/env.crt",'certfile':"/etc/mosquitto/certs/env.csr",'keyfile':"/etc/mosquitto/certs/server.key",})
+    publish.single(topic=topicfinal, payload=s, hostname="192.168.0.2", port=8883, tls={'ca_certs':"/etc/mosquitto/ca_certificates/ca.crt",'certfile':"/etc/mosquitto/certs/env.crt",'keyfile':"/etc/mosquitto/certs/env.key",})
     time.sleep(5)
 
 #clean GPIO when program is interrupted
