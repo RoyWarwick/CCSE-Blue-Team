@@ -1,2 +1,0 @@
-# CCSE-Blue-Team
-foobar
