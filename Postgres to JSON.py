@@ -2,6 +2,8 @@ import psycopg2
 from datetime import datetime
 import json
 import os
+from flask import Flask
+import sendFile
 
 #retrieving data from database
 def fromDatabase(farmid,tunnelid,startdate,enddate):
@@ -21,19 +23,13 @@ def fromDatabase(farmid,tunnelid,startdate,enddate):
     farmsql = """
     SELECT * from crops where farmid = %s and tunnelid = %s and date between %s and %s;
     """
-    alarmsql = """
-    SELECT * from alarms where farmid = %s and tunnelid = %s and date between %s and %s;
-    """
+
     #database output
     #farm data
     cursor.execute(farmsql,(inputarray[0], inputarray[1], inputarray[2], inputarray[3]))
     farmsql_result = cursor.fetchall() #outputs a list in the form of [(dataid, farmid, tunnelid, sensorid, time, date, temp_c, humidity), (next batch)]
     
-    #alarm data
-    cursor.execute(alarmsql,(inputarray[0], inputarray[1], inputarray[2], inputarray[3]))
-    alarmsql_result = cursor.fetchall() #outputs a list in the form of [(dataid, farmid, tunnelid, sensorid, time, date, alarmsound, pinentry, access), (next batch)]
-
-    return farmsql_result, alarmsql_result
+    return farmsql_result
 
 #convert farm postgres data to desired JSON format
 def FarmtoJSON(data):
@@ -58,24 +54,29 @@ def FarmtoJSON(data):
 
 #driver code
 def main():
+    #receiving API request
+    app=Flask(__name__)
+    app.run(debug = True)
+
+    @app.route('/log', methods=['GET'])
     parameters = [] #parameters sent by the GUI, in the order of [farmid, tunnelid, startdate, enddate]
-    with open("parameters.txt", "r") as file:
+    with open("send_to_arno", "r") as file:
         line = file.read().split(',') #each parameter is split by a ,
         parameters.append(line)
 
     try:
-        farmdata,alarmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
-        global farmjson, alarmjson
+        farmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
+        global farmjson
         farmjson = FarmtoJSON(farmdata)
-        alarmjson = AlarmtoJSON(alarmdata)
 
     except TypeError:
         print("Not enough parameters given", end='\n')
-
+    
     #writing the farm json data to a file
     with open("APIRequest.json", "w+") as file:
         file.write("Farm Data \n")
         file.write(farmjson)
+        sendFile.send_file(file)
 
 if __name__ == '__main__':
     main()
