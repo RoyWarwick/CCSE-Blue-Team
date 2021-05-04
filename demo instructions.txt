@@ -1,0 +1,8 @@
+1. Download and install Adafruit from GH   git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+cd Adafruit_Python_DHT
+sudo apt-get install build-essential python-dev
+sudo python setup.py install
+
+2. Download mosquitto folder from github Environment Branch. Copy its contents in /etc/mosquitto (ca_certificates, certs, conf.d, mosquitto.conf)  (https://github.com/RoyWarwick/CCSE-Blue-Team/tree/Environment/mosquitto)
+3. Download EnvDemo.py from Github  (https://github.com/RoyWarwick/CCSE-Blue-Team/blob/Environment/EnvDemo.py) 
+4. sudo python3 EnvDemo.py 
