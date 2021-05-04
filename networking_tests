@@ -1,0 +1,39 @@
+These Tests are to be run after the system has been installed to test the communication between components
+
+Test 1
+On Aggregator:
+mosquitto_sub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/phys_test'
+
+
+On Physical security sensor:
+mosquitto_pub -p 1883 --cafile ca.crt --cert sec.crt --key sec.key -h 192.168.0.2 -t 'agr/phys_test' -m 'Test success'
+
+Expected Result: the mosquitto_sub in the aggregator should display the 'Test success' message
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Test 2:
+On Aggregator:
+mosquitto_sub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/env_test'
+
+
+On Environmental sensor:
+mosquitto_pub -p 1883 --cafile ca.crt --cert env.crt --key env.key -h 192.168.0.2 -t 'agr/env_test' -m 'Test success'
+
+Expected Result: the mosquitto_sub in the aggregator should display the 'Test success' message
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Test 3:
+On Forwarder:
+mosquitto_sub -p 1883 -cafile ca.crt --cert forwarder-mqtt.crt --key forwarder-mqtt.key -h 192.168.0.254 -t 'fwd/aggr_in_test'
+
+On Aggregator:
+mosquitto_pub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.254 -t 'fwd/aggr_in_test'
+
+Expected result: The mosquitto_sub on the forwarder should display the 'Test success' message 
+
+
+
+For each of these tests run the same commands on the opposite machines which should also work correctly.
+
