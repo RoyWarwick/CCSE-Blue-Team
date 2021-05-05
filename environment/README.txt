@@ -27,12 +27,11 @@ Loop of:
 Step 0.1) Requires aggregator to be already running
 Step 0.2) sudo chmod -R 777 CCSE-Blue-Team/ to make sure the install script is runnable
 
-Step 1) run install.sh as sudo (Internet required) (Might take a while, it is updating and upgrading the tools)
+Step 1) run install.sh as su (Internet required) (Might take a while)
 sudo ./install.sh
+RPi will reboot at the end
 
-Step 2) Hopefully it works.
-install.sh makes the Pi reboot.
-The Environment.py script should automatically run on startup.
+Step 2) Hopefully it works automated with the Environment.py script already running
 The Py script is listening for a topic to publish to.
 The LEDs should light up if thresholds are passed even if a topis is not specified. 
 When it is received, it should start publishing to aggregator and displaying values and information to terminal.
