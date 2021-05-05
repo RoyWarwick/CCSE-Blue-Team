@@ -1,4 +1,11 @@
-The RPi must be configured like in the diagram. 
+
++------------------------------------+
+| Environment Unit section beginning |
++------------------------------------+
+
+This component uses sensor 1 (the machine with the private IPv4 address 192.168.0.1)
+
+The RPi must be configured accordingly to the diagram.
 
 Red LED	PIN 11 = GPIO 17 (Red color wire)
 Blue LED	PIN 12 = GPIO 18 (Purple color wire)
@@ -13,7 +20,7 @@ DHT Ground  = PIN 6 (Black color wire)
 
 Breadboard Ground for LEDs = PIN 9 (Black color wire)
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 install.sh takes care of: 
 - updating & upgrading RPi
@@ -28,7 +35,7 @@ install.sh takes care of:
 - Running Py Script on startup by modifying /etc/rc.local by adding the Environment.py
 - rebooting for any changes that need it for having effect
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 
 Environment.py works by:
 - Sending securely a random number to aggregator to ask for a topic
@@ -41,7 +48,7 @@ Loop of:
 - Action taken if thresholds are crossed: LEDs light up accordingly and message is output to the terminal that runs the script
 - Publishing Date,Time and Temperature and humidity Values securely to the aggregator, using the topic obtained earlier
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 Installing and running steps:
 
@@ -57,8 +64,13 @@ The Py script is listening for a topic to publish to.
 The LEDs should light up if thresholds are passed even if a topis is not specified. 
 When it is received, it should start publishing to aggregator and displaying values and information to terminal.
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
 Troubleshooting:
 1) If DHT sensor does not work with the library installed from the install.sh script, please download it from this link ( https://github.com/adafruit/Adafruit_Python_DHT ) and run the setup.py from there. 
 2) If the Environment.py does not start upon rebooting, please run it manually. (can check if it is running with    ps -aef | grep python   )
+
+
++---------------------------------+
+| Environment Unit section ending |
++---------------------------------+
