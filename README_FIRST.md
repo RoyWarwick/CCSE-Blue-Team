@@ -89,3 +89,21 @@ Troubleshooting:
 +---------------------------------+
 | Environment Unit section ending |
 +---------------------------------+
+
+
++------------+
+| Aggregator |
++------------+
+
+-This component has an expected I.P address of 192.168.0.4 consistant with the network architecture provided under option A.
+-In order to install, pull the aggregator directory and it's contents from the Github Main branch.
+-There are two files of interest within the aggregator directory, Installer.sh and Starter.sh
+
+-installer.sh will distribute certificates and config files, as well as changing file permissions to enable the system to run.
+-installer.sh does require root (sudo) permissions to run
+-The installation process should only be run once.
+-It may be required to alter the permissions of the Installation script to enable it to run, this can be achieved in the shell by 'chmod u+x installer.sh'
+
+-starter.sh will start the Aggregator once it is installed.
+-starter.sh can be run by a user of any privilage, but it is recommended to run it as an unprivilaged user.
+-The agreggator must be started after the forwarder else there is a chance that data may be lost
