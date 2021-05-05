@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+Tunnels
+{% endblock %}
+{% block content %}
+
+<body>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Tunnel ID</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+
+{% for tunnel in Tunnel_Status %}
+    {% if tunnel[1] == true %}
+    <tbody>
+      <tr class="table-success">
+      <th scope="row">{{tunnel[0]}}</th>
+      <td><i class="fas fa-check"></i></td>
+    </tr>
+  </tbody>
+    {% else %}
+  <tbody>
+      <tr class="table-danger">
+      <th scope="row">{{tunnel[0]}}</th>
+      <td><i class="fas fa-exclamation"></i></td>
+    </tr>
+     </tbody>
+  {% endif %}
+{% endfor %}
+</table>
+    <h4>Fore more information on the specific sensors check the <a href = "status" style="color:blue">Status</a> page</h4>
+{% endblock %}
+</body>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+Physical - Security
+{% endblock %}
+{% block content %}
+<body>
+{% for access_attempt in Physical_security_json %}
+    {% if access_attempt.Access_Granted == "IN" %}
+        <div class="card text-white bg-success mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+          <div class="card-header">Tunnel: {{access_attempt.tunnel_id}} Sensor: {{access_attempt.sensor_id}}</div>
+          <div class="card-body">
+            <h4 class="card-title">Some has entered</h4>
+            <p class="card-text">Date: {{access_attempt.date}} Time: {{access_attempt.time}} </p>
+          </div>
+        </div>
+    {% else %}
+        <div class="card text-white bg-danger mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+          <div class="card-header">Tunnel: {{access_attempt.tunnel_id}} Sensor: {{access_attempt.sensor_id}}</div>
+          <div class="card-body">
+            <h4 class="card-title">Some has tried entering</h4>
+            <p class="card-text">Date: {{access_attempt.date}} Time: {{access_attempt.time}} </p>
+          </div>
+        </div>
+    {% endif %}
+    {% if loop.nextitem is not defined and access_attempt.Alarm_sounding == "T" %}
+    <div class="alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>The alarm is ringing</strong>
+    </div>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+</body>

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}
+Home Page
+{% endblock %}
+{% block content %}
+
+<section>
+    <img class="mySlides" src="{{ url_for('static', filename='img/Crops.jpg')}}" height="700">
+    <img class="mySlides" src="{{ url_for('static', filename='img/Traktor.jpg')}}" height="700">
+    <img class="mySlides" src="{{ url_for('static', filename='img/HonestWork.jpg')}}" height="700">
+</section>
+
+<div class="row">
+    <div class="column">
+        <a href="/sensor">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+                <div class="card-body">
+                    <h4 class="card-title">Sensors</h4>
+                    <p class="card-text">This page's content will show you all information of all active sensors. It will identify them via their tunnel and sensor ID.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="column">
+        <a href="/tunnel">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+                <div class="card-body">
+                    <h4 class="card-title">Tunnel</h4>
+                    <p class="card-text">This page shows information regarding active tunnels. It's colour coded to indentify if any of the sensors in the tunnels need to be checked.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="column">
+        <a href="/status">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+                <div class="card-body">
+                    <h4 class="card-title">Status</h4>
+                    <p class="card-text">Identifies sensors that need immediate attention. It'll also outline if humidity or temperature is the cause</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="column">
+        <a href="/log">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+                <div class="card-body">
+                    <h4 class="card-title">Log</h4>
+                    <p class="card-text">A way of querying old sensor data.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="column">
+        <a href="/physicalAccess">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; margin: 25px 25px 25px 25px;">
+                <div class="card-body">
+                    <h4 class="card-title">Physical Security</h4>
+                    <p class="card-text">Shows a log of when people have entered the facility. It also shows whether the alarm is being triggered</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<script>
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}
+  x[myIndex-1].style.display = "block";
+  setTimeout(carousel, 2000);
+}
+</script>
+{% endblock %}
+
