@@ -107,3 +107,23 @@ Troubleshooting:
 -starter.sh will start the Aggregator once it is installed.
 -starter.sh can be run by a user of any privilage, but it is recommended to run it as an unprivilaged user.
 -The agreggator must be started after the forwarder else there is a chance that data may be lost
+
++-----------------------+
+| Processor and Storage |
++-----------------------+
+-This component holds an expected IP address of 192.168.255.2 consistent with the given network architecture (option A)
+-Installation of this component is done by pulling all files provided within the "processor and storage" directory which will provide the relevant python code and with main files of interest: install.sh and start.sh
+
+-install.sh will install all the relevant programs required to run the system, and will require root (use sudo) permissions to be executed
+-install.sh will require internet connection
+-install.sh will update all programs within the Linux environment and will further install/update Python libraries (including: psycopg2, tdqm, Flask)
+-In addition, install.sh will setup the Postgres environment used as the storage component
+
+-start.sh will start all processor and storage processes, and is recommended to be run in user mode, which will immediately startup tcp servers to receive files from the collector
+
+NOTE: The .sh files may require a change in permissions to be able to execute them in a Linux environment, which can be done by: chmod +x <filename>.sh
+
++--------------------------------------+
+| Processor and Storage section ending |
++--------------------------------------+
+
