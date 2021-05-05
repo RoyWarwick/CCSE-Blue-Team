@@ -127,3 +127,27 @@ NOTE: The .sh files may require a change in permissions to be able to execute th
 | Processor and Storage section ending |
 +--------------------------------------+
 
++---------------+
+| Dashboard/GUI |
++---------------+
+-This component holds an expected IP address of 192.168.255.3 consistent with the given network architecture (option A)
+-Installation of this component is done by pulling all files provided within the "dashboard" directory which will provide the relevant python code and with main files of interest: install.sh and run.sh
+- First thing in order is to change the permission of the .sh files into executables. This can be done via. 
+
+**All of these commands should take place within the Dashboard Directory.**
+```bash
+chmod +x install.sh run.sh
+```
+- Now that is done you'll need internet access to run the following command. 	*This command should be run without sudo (However the command will require sudo privelleges for some of the execution)* 
+```bash
+./install.sh
+```
+- After that is complete you're area ready to run the server without an internet connection. This can be done via using.
+```bash
+./run.sh
+```
+- To exit/stop the server please just
+```bash
+CTRL + C
+``` 
+To break the command. 
