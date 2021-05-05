@@ -11,6 +11,19 @@ install.sh takes care of:
 - Running Py Script on startup by modifying /etc/rc.local by adding the Environment.py
 - rebooting for any changes that need it for having effect
 
+Environment.py works by:
+- Sending securely a random number to aggregator to ask for a topic
+- Subscribing securely to the aggregator's request topic and listening for any response.
+- The response is stored and used later on as the topic for sending Temperature and Humidity values
+Loop of:
+- Temperature and Humidity values are obtained from the DHT22 sensor
+- Printing Date,Time and Temperature and humidity Values
+- Checking their values against thresholds (22 & 23 *C | 49 & 50 % Humidity)
+- Action taken if thresholds are crossed: LEDs light up accordingly and message is output to the terminal that runs the script
+- Publishing Date,Time and Temperature and humidity Values securely to the aggregator, using the topic obtained earlier
+
+
+
 Step 0.1) Requires aggregator to be already running
 
 Step 1) run install.sh as sudo (Internet required) (Might take a while, it is updating and upgrading the tools)
