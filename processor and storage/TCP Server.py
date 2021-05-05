@@ -5,10 +5,10 @@ import os
 #tcp client for sending real time data
 
 #send file to GUI through TCP socket
-def receivefile(filename): #the function takes in two parameters: file = the file to be sent, s = tcp socket
+def receivefile(filename): #the function takes in two parameters: file = the file to be received, s = tcp socket
     #server ip address and port
     host = "192.165.255.2"
-    port = 22
+    port = 432
 
     buffer_size = 1024 #receive 1024 bytes at a time
     separator = "<separator>"
@@ -32,7 +32,7 @@ def receivefile(filename): #the function takes in two parameters: file = the fil
 
     #start receiving file from socket + write to file stream
     progress = tdqm.tdqm(range(filesize), f"Receiving {filename}", unit = "B", unit_scale = True, unit_divisor = 1024)
-    with open(filename, "wb") as file:
+    with open(filename, "w+") as file:
         while True:
             #read bytes from socket
             read_bytes = client_socket.recv(buffer_size)
@@ -49,13 +49,31 @@ def receivefile(filename): #the function takes in two parameters: file = the fil
     s.shutdown(s.SHUT_WR) #notify server that transfer is complete
     s.close()
 
+#checks whether the received file is sensor data or alarm data
+def alarmorsensor(file):
+    dict = []
+    with open(file, "r"):
+        dict = json.load(file)
+    tester = dict[1]
+    #creates renamed file for integration with other programs
+    if len(tester) != 8:
+        with open("sensordata.json", "w+") as file:
+            json.dumps(dict, indent = 2)
+            return file
+    else:
+        with open("alarmdata.json", "w+") as file:
+            json.dumps(dict, indent = 2)
+            return file
 #driver code
 def main():
-    s = networkconfig() #setup tcp socket
-    sensorfile = "sensordata.json"
-    sendfile(sensorfile)
-    alarmfile = "alarmdata.json"
-    sendfile(alarmfile)
+    os.system("python3 'Postgres to JSON.py'")
+    while True: #infinite loop
+        datafile = "data.json"
+        receivefile(datafile)
+        alarmorsensor(datafile)
+        os.system("python3 'JSON to Postgres.py'") #executes the json to postgres code
+        os.system("python3 'TCP Client.py'") #sends the jsonfile to GUI
+        os.remove("data.json")
 
 if (__name__ == __main__):
     main()

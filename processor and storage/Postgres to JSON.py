@@ -54,29 +54,29 @@ def FarmtoJSON(data):
 
 #driver code
 def main():
-    #receiving API request
-    app=Flask(__name__)
-    app.run(debug = True)
+    while True:
+        #receiving API request
+        app=Flask(__name__)
+        app.run(debug = True)
+        parameters = [] #parameters sent by the GUI, in the order of [farmid, tunnelid, startdate, enddate]
 
-    @app.route('/log', methods=['GET'])
-    parameters = [] #parameters sent by the GUI, in the order of [farmid, tunnelid, startdate, enddate]
-    with open("send_to_arno", "r") as file:
-        line = file.read().split(',') #each parameter is split by a ,
-        parameters.append(line)
+        @app.route('/log', methods=['GET'])
+        with open("send_to_arno", "r") as file:
+            line = file.read().split(',') #each parameter is split by a ,
+            parameters.append(line)
 
-    try:
-        farmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
-        global farmjson
-        farmjson = FarmtoJSON(farmdata)
+        try:
+            farmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
+            global farmjson
+            armjson = FarmtoJSON(farmdata)
 
-    except TypeError:
-        print("Not enough parameters given", end='\n')
+        except TypeError:
+            print("Not enough parameters given", end='\n')
     
-    #writing the farm json data to a file
-    with open("APIRequest.json", "w+") as file:
-        file.write("Farm Data \n")
-        file.write(farmjson)
-        sendFile.send_file(file)
-
+        #writing the farm json data to a file
+        with open("APIRequest.json", "w+") as file:
+            file.write(farmjson)
+            sendFile.send_file(file)
+        os.remove('APIRequest.json')
 if __name__ == '__main__':
     main()

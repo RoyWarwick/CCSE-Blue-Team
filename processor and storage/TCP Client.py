@@ -48,6 +48,8 @@ def main():
         filename = "sensordata.json"
         file = open(filename, "r")
         file.close()
+        sendfile(filename)
+        os.remove("sensordata.json")
         
     except IOError: #in the case where the file cannot be opened
         print("File does not exist or cannot be opened", end="\n")
@@ -57,6 +59,7 @@ def main():
         file = open(filename, "r")
         file.close()
         sendfile(filename)
+        os.remove("alarmdata.json")
     except IOError:
         print("File does not exist or cannot be opened", end="\n")
 
