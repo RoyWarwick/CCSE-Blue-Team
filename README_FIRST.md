@@ -130,6 +130,7 @@ NOTE: The .sh files may require a change in permissions to be able to execute th
 +---------------+
 | Dashboard/GUI |
 +---------------+
+
 -This component holds an expected IP address of 192.168.255.3 consistent with the given network architecture (option A)
 -Installation of this component is done by pulling all files provided within the "dashboard" directory which will provide the relevant python code and with main files of interest: install.sh and run.sh
 - First thing in order is to change the permission of the .sh files into executables. This can be done via. 
