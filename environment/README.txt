@@ -43,6 +43,8 @@ Loop of:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Installing and running steps:
+
 Step 0.1) Requires aggregator to be already running
 Step 0.2) sudo chmod -R 777 CCSE-Blue-Team/ to make sure the install script is runnable
 
