@@ -63,7 +63,7 @@ echo "require_certificate true" >> /etc/mosquitto/mosquitto.conf
 # Create the root.sh file
 echo "#\!/bin/bash" > root.sh
 echo "cd /usr/security" >> root.sh
-echo "TOPIC=$(/usr/security/reg.sh $LOCAL)" >> root.sh
+echo "TOPIC=\$(/usr/security/reg.sh $LOCAL)" >> root.sh
 echo "/usr/security/MatrixKeypad \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "/usr/security/sensor \"$LOCAL\" \$TOPIC & disown" >> root.sh
 echo "exit 0" >> root.sh
