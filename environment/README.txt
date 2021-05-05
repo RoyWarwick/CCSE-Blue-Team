@@ -25,6 +25,7 @@ Loop of:
 
 
 Step 0.1) Requires aggregator to be already running
+Step 0.2) sudo chmod -R 777 CCSE-Blue-Team/ to make sure the install script is runnable
 
 Step 1) run install.sh as sudo (Internet required) (Might take a while, it is updating and upgrading the tools)
 sudo ./install.sh
