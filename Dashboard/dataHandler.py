@@ -38,6 +38,7 @@ getData()
 
 
 def getAPIData():
+    getData()
     with open("APIRequest.json") as api_data:
         API_DATA = json.load(api_data)
     sensor_array = []
