@@ -2,8 +2,7 @@ import psycopg2
 from datetime import datetime
 import json
 import os
-from flask import Flask
-import sendFile
+
 
 #retrieving data from database
 def fromDatabase(farmid,tunnelid,startdate,enddate):
@@ -54,29 +53,23 @@ def FarmtoJSON(data):
 
 #driver code
 def main():
-    while True:
-        #receiving API request
-        app=Flask(__name__)
-        app.run(debug = True)
-        parameters = [] #parameters sent by the GUI, in the order of [farmid, tunnelid, startdate, enddate]
+    parameters = [] #parameters sent by the GUI, in the order of [farmid, tunnelid, startdate, enddate]
 
-        @app.route('/log', methods=['GET'])
-        with open("send_to_arno", "r") as file:
-            line = file.read().split(',') #each parameter is split by a ,
-            parameters.append(line)
+    with open("send_to_arno", "r") as file:
+        element = file.read().split(',') #each parameter is split by a ,
+        parameters.append(element)
 
-        try:
-            farmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
-            global farmjson
-            armjson = FarmtoJSON(farmdata)
+    try:
+        farmdata = fromDatabase(parameters[0], parameters[1], parameters[2], parameters[3])
+        global farmjson
+        farmjson = FarmtoJSON(farmdata)
 
-        except TypeError:
-            print("Not enough parameters given", end='\n')
+    except TypeError:
+        print("Not enough parameters given", end='\n')
     
-        #writing the farm json data to a file
-        with open("APIRequest.json", "w+") as file:
-            file.write(farmjson)
-            sendFile.send_file(file)
-        os.remove('APIRequest.json')
+    #writing the farm json data to a file
+    with open("APIRequest.json", "w+") as file:
+        file.write(farmjson)
+        return file
 if __name__ == '__main__':
     main()

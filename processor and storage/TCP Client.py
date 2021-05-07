@@ -1,5 +1,5 @@
 import socket
-import tdqm
+import tqdm
 import os
 
 #tcp server for receiving client real time data
