@@ -33,6 +33,7 @@ def sensorDetails():
 
 @app.route('/tunnel')  # inputs the value of the sensor number in the URL
 def farmDetails():
+    dataHandler.getData()
     Tunnel_Status = dataHandler.getTunnelData()
     return render_template('tunnel.html', Tunnel_Status=Tunnel_Status)
 
@@ -69,6 +70,7 @@ def log():
 
 @app.route('/status')
 def status():
+    dataHandler.getData()
 
     sorted_data = dataHandler.sortExtremeData()
 
