@@ -152,3 +152,13 @@ chmod +x install.sh run.sh
 CTRL + C
 ``` 
 To break the command. 
+
++--------------------------------------+
+|        Forwarder and Collector       |
++--------------------------------------+
+-This component holds an expected IP addresses of 172.16.0.201/24,  192.168.0.254/24 for the forwarder, 172.16.0.202/24, 192.168.255.254/24 for the collector consistent, with the given network architecture (option A)
+- The forwarder directory should be on forwarder machine, collector on the collector machine.
+- When on each machine, the install scripts are in the scripts directory in each forwarder and collectory folder. Give the file permission by chmod +x installation_forwader.sh or chmod +x installation_collector.sh
+- IPSEC will now be set up on both machines
+- MQTT will have TLS compatability and listener and broker started on the forwarder machine
+- Forwarder machine will also send data to processor via tcp-client with IPSEC encryption.
