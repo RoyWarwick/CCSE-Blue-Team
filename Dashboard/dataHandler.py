@@ -57,6 +57,7 @@ def getAPIData():
 
 
 def getSensorInfo():
+    getData()
     sensor_array = []
     tmp_array = []
     tunnels = JSON_FILE["tunnel_id"]
