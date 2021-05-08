@@ -41,7 +41,7 @@ mv forwarder/scripts/env_in_json.py .
 mv forwarder/scripts/phys_in_json.py .
 mv forwarder/scripts/installation_forwarder.sh .
 mv forwarder/scripts/run.sh .
-mv forwarder/script/tcp_client.py
+mv forwarder/script/tcp_client.py .
 
 touch host_id
 touch aggr_env_in.json
