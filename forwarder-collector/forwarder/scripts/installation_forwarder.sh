@@ -49,4 +49,4 @@ touch aggr_phys_in.json
 
 chmod +x run.sh
 
-echo "Installation complete."
+echo "Installation and set-up complete."
