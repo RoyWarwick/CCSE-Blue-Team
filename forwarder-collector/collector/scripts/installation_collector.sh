@@ -7,7 +7,6 @@ fi
 
 
 sudo apt install strongswan libcharon-extra-plugins strongswan-pki -y
-sudo apt install python3 -y
 
 
 
@@ -20,5 +19,8 @@ mv collector/etc/ipsec.conf /etc/
 mv collector/etc/ipsec.conf.x509 /etc/
 mv collector/etc/ipsec.secrets /etc/
 
+mv collector/scripts/installation_collector.sh .
+mv collector/scripts/run.sh .
+chmod +x run.sh
 
-echo "Installation complete"
+echo "Installation and set-up complete"
