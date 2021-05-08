@@ -11,7 +11,7 @@ sudo apt install -y strongswan libcharon-extra-plugins strongswan-pki
 sudo apt install -y openssl
 
 
-
+pip3 install tqdm
 
 
 
