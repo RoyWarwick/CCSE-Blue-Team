@@ -10,4 +10,4 @@ fi
 sudo sysctl -p
 sudo service ipsec start
 
-echo "IPSEC tunnel are not set up."
+echo "IPSEC tunnel are now set up."
