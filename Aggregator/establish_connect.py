@@ -35,19 +35,17 @@ incoming = open("./tmp/" + type_connect + "_incoming", 'r') #open the file that 
 next_sensor_id = 1 #The ID of the next sensor to add
 
 i=0
-while(i==0): #For a general system this will run indefinitely checking for new connections, for the current test build it will run a finite number of times
+while(i==0): #For a general system this will run indefinitely checking for new connections
 	current = incoming.readline() #read the next line of the file
-	#print(current)
 	if(current != ""): #assuming that the readline function has been able to retrieve information from the file
-		#print("This thing is not blank")
 		try:
-			#print(int(current)) #The expected value should be a random integer from the sensor
+			#The expected value should be a random integer from the sensor
 			
 			#Start a mosquitto topic and file, each associated with the next_sensor_id, will be of form (mosquitto_sub -p 1883 -t 'agr/env_sensor_1' > ./tmp/env_sensor_1 &)
-			os.system("mosquitto_sub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "' > ./tmp/" + type_connect + "_sensor_" + str(next_sensor_id) + " &")
+			os.system("mosquitto_sub -p 8883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "' > ./tmp/" + type_connect + "_sensor_" + str(next_sensor_id) + " &")
 			
 			#publish to the response topic associating a random number with the topic so that sensors who published said number can connect to it.
-			os.system("mosquitto_pub -p 1883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_response' -m \"" + current[:-1] + " agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "\"")
+			os.system("mosquitto_pub -p 8883 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'agr/" + type_connect + "_response' -m \"" + current[:-1] + " agr/" + type_connect + "_sensor_" + str(next_sensor_id) + "\"")
 			
 			#The parsing program is responsible for the mosquitto topic, including ensuring only one sensor is connected.
 			
@@ -58,11 +56,9 @@ while(i==0): #For a general system this will run indefinitely checking for new c
 			#increment the sensor id
 			next_sensor_id+=1			
 		except: #if the value read in isn't an int it is not valid
-			#print("except triggered: not int")
 			j=0 #deal with indentation errors
 	else:
 		time.sleep(1) #wait for more connections if there hasn't been one discovered in the present cycle
-	#i+=1 #incremention of the indicator for the while loop, related to test build
 	
 incoming.close() #close the file that data is being read from
 

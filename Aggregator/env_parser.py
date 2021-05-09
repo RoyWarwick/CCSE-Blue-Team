@@ -37,7 +37,7 @@ chosen = incoming[random.randint(0,len(incoming)-1)] #choose one of the integers
 if(legacyline[:3] == "red"): #This needs to be altered before being placed on the live test system to read == not !=
 	exit("the legacyline is a reserve command from an aggregator so something has gone wrong, the system may be using files that were not properly cleared in the previous run")
 
-os.system("mosquitto_pub -p 1883 -t 'agr/env_sensor_" + str(sensor_id) + "' -m \"res " + chosen[:-1] + "\"") #publish back to the topic the chosen random number
+os.system("mosquitto_pub -p 8883 -t 'agr/env_sensor_" + str(sensor_id) + "' -m \"res " + chosen[:-1] + "\"") #publish back to the topic the chosen random number
 
 time.sleep(1)
 	
@@ -58,20 +58,14 @@ while(i==0): #as with establish_connect.py this is for testing purposes to have 
 			data[2] = data[2][2:] #remove the 'T='
 			data[3] = data[3][2:] #remove the 'H='
 			
-			#writefile = open("json_struct_sensor_" + str(sensor_id) + ".txt", "a")
+			os.system("mosquitto_pub -p 8883 -h 192.168.0.2 --cafile ca.crt --cert server.crt --key server.key -t 'agr/env_json' -m \"" +str(sensor_id)+ " {\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "}\"")
 			
-			#writefile.write("{\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "}, \n") #write the json structure to the file
-			
-			os.system("mosquitto_pub -p 1883 -h 192.168.0.254 --cafile ca.crt --cert server.crt --key server.key -h 192.168.0.2 -t 'fwd/aggr_env_in' -m \"{\"sensor_id\":"+str(sensor_id)+ ", \"time\": \""+data[1]+ "\", \"date\": \""+data[0]+ "\", \"Temp_C\":"+data[2]+ ", \"Humidity\":"+data[3]+ "},\"")
-			
-			
-			#writefile.close()
 		except:
 			time.sleep(0.1)
 	time.sleep(3)
 	#i+=1 
 	
-writefile.close() #close the file the json structure is being saved to
+#writefile.close() #close the file the json structure is being saved to
 	
 
 
