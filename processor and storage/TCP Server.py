@@ -66,7 +66,6 @@ def alarmorsensor(file):
             return file
 #driver code
 def main():
-    os.system("python3 'Postgres to JSON.py'")
     while True: #infinite loop
         datafile = "data.json"
         receivefile(datafile)
