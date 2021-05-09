@@ -7,7 +7,7 @@ fi
 
 
 sudo apt install strongswan libcharon-extra-plugins strongswan-pki -y
-
+sudo apt intstall openssl -y
 
 
 
